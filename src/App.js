@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./index.css";
 
 function Header() {
-    return <h1>SAFARIYAN</h1>;
+    return <h1>SAFARI</h1>;
 }
 
 export default function App() {
