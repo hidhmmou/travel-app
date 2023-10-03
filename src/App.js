@@ -8,6 +8,7 @@ function Header() {
 export default function App() {
     const [items, setItems] = useState([]);
     const [sortBy, setSortBy] = useState("input");
+    const [sortMode, setSortMode] = useState("ascending");
 
     function onAddItem(newItem) {
         setItems((oldItems) => [...oldItems, newItem]);
@@ -39,6 +40,8 @@ export default function App() {
                 onDelete={onDelete}
                 sortBy={sortBy}
                 setSortBy={setSortBy}
+                sortMode={sortMode}
+                setSortMode={setSortMode}
             />
             <Footer items={items} />
         </div>
@@ -110,7 +113,15 @@ function Form({ onAddItem }) {
     );
 }
 
-function List({ items, onToggle, onDelete, sortBy, setSortBy }) {
+function List({
+    items,
+    onToggle,
+    onDelete,
+    sortBy,
+    setSortBy,
+    sortMode,
+    setSortMode,
+}) {
     let sortedItems = items;
 
     if (sortBy === "description")
@@ -121,6 +132,7 @@ function List({ items, onToggle, onDelete, sortBy, setSortBy }) {
         sortedItems = items
             .slice()
             .sort((a, b) => Number(a.packed) - Number(b.packed));
+    if (sortMode === "descending") sortedItems = sortedItems.reverse();
     return (
         <div className="list">
             <ul>
@@ -142,6 +154,13 @@ function List({ items, onToggle, onDelete, sortBy, setSortBy }) {
                     <option value="input">Sort by input order</option>
                     <option value="description">Sort by description</option>
                     <option value="packed">Sort by packed status</option>
+                </select>
+                <select
+                    value={sortMode}
+                    onChange={(e) => setSortMode(e.target.value)}
+                >
+                    <option value="ascending">ascending</option>
+                    <option value="descending">descending</option>
                 </select>
                 <button onClick={() => onDelete(-1)}>Clear list</button>
             </div>
