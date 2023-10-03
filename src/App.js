@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 
 function Header() {
@@ -6,7 +6,12 @@ function Header() {
 }
 
 export default function App() {
-    const [items, setItems] = useState([]);
+    // const [items, setItems] = useState([]);
+    const [items, setItems] = useState(() => {
+        // Load items from local storage during initialization
+        const storedItems = localStorage.getItem("items");
+        return storedItems ? JSON.parse(storedItems) : [];
+    });
     const [sortBy, setSortBy] = useState("input");
     const [sortMode, setSortMode] = useState("ascending");
 
@@ -29,6 +34,10 @@ export default function App() {
         }
         setItems(items.filter((item) => itemId !== item.id));
     }
+
+    useEffect(() => {
+        localStorage.setItem("items", JSON.stringify(items));
+    }, [items]);
 
     return (
         <div className="app">
